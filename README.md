@@ -13,7 +13,7 @@
     a foolish experence contribute me  to make this ..
     this is a very small and simple web framework base on tornado 
 ## Install 
-    curl -fsSL https://raw.githubusercontent.com/Qingluan/QTornado/install.sh | sh 
+    curl -fsSL https://raw.githubusercontent.com/Qingluan/QTornado/master/install.sh | sh 
 ## Useage 
     
     Qtornado.py PROJECT  
