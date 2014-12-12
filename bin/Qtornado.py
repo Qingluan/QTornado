@@ -107,7 +107,7 @@ github : http://github.com/Qingluan
 	parser.add_argument('-i','--init',default=None)
 	parser.add_argument('-c','--add-controller',default=None)
 	parser.add_argument('-r','--re',default=False,type=bool)
-	
+	parser.add_argument('--uninstall',default=None)
 	
 	# args,remind = parser.parse_known_args(args)
 	args = parser.parse_args()
@@ -138,3 +138,6 @@ if __name__ == "__main__":
 	if args.add_controller:
 		tree.add_controller(args.add_controller)
 
+	if args.uninstall :
+		os.popen("rm /usr/local/bin/Qtornado.py").read()
+		os.popen("rm -rf /usr/local/lib/python2.7/site-packages/QTornado")
