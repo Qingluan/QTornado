@@ -1,3 +1,5 @@
+#!/usr/bin/python
+
 import sys
 import os
 
@@ -10,7 +12,7 @@ from lib import PathDecorator
 from lib import XmlTag
 import argparse
 
-root_path= os.path.dirname(__file__)
+root_path= os.path.dirname( "./")
 
 fileSave = PathDecorator(root_path)
 
