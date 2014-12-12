@@ -1,10 +1,8 @@
 import sys
 import os
 
-if os.path.exists("../src"):
-    sys.path += ["../src"]
-else :
-    sys.path += ['/usr/local/lib/python2.7/site-packages/QTornado/src']
+sys.path += ['/usr/local/lib/python2.7/site-packages/QTornado/src']
+
 from init_filter import FillContentHandler
 
 # load functional lib 
