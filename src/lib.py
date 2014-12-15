@@ -51,7 +51,7 @@ class XmlTag(object):
 				new_content += line
 			else :
 				print "add  route : {} ".format(new[1:-1])
-				new_content += "\t\t{}\n#<{}></{}>".format(new,tag,tag)
+				new_content += "\t\t{}\n#<{}></{}>\n".format(new,tag,tag)
 
 		self.read_fp.close()
 		with open(self.file_name,'w') as fp:
