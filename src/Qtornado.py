@@ -2,6 +2,17 @@ import sys
 import os
 from init_filter import FillContentHandler
 
+
+src_path = '/usr/local/lib/python2.7/site-packages/QTornado/src'
+resource_path = '/usr/local/lib/python2.7/site-packages/QTornado/resource/static'
+if not os.path.exists(src_path) : 
+	print "not installed  completed ... yet or version isn't match"
+	src_path = "./" 
+	resource_path = "../resource/static"
+
+
+sys.path += [src_path]
+
 # load functional lib 
 from lib import PathDecorator
 from lib import XmlTag
@@ -42,19 +53,31 @@ class TreeFile(FillContentHandler):
 		main_file = _path("main.py")
 		main_file_str = self.get_main_content()
 
+		print "manifest file copy is\t",
+		os.popen("cp {}  {}".format(os.path.join( src_path,"manifest.py"), cal_path))
+		print "  ok"
 
-
+		print "init  control \t",
 		self._write_file(controller_file,controller_file_content)
-		print "init  control \t ok"
+		print " ok"
 
+		print "init setting ,"
 		self._write_file(setting_file, setting_file_content)
-		print "init  setting \t ok"
+		print "\t ok"
 
+		print "init html ,"
 		self._write_file(html_file, html_file_content)
-		print "init  html \t ok"
+		print "\t ok"
 
+		print "run file load ,"
 		self._write_file(main_file, main_file_str)
-		print "run file load \t ok"
+		print "\t ok"
+
+		print "static res build ...",
+		com = "cp -a {}/*  {}".format(resource_path,_path("static"))
+		print com
+		# os.popen(com)
+		print "ok in  "
 
 	def _write_file(self,file_name,content):
 		with open(file_name,"w") as file_handler:
@@ -70,6 +93,7 @@ class TreeFile(FillContentHandler):
 		print "add controller : {}".format(name) ,
 		cal_path = self.root_path
 
+
 		path_name, handler_name =  self.get_path_handler_name(name)
 
 		controller_file = os.path.join(cal_path,"controller.py")
@@ -81,8 +105,13 @@ class TreeFile(FillContentHandler):
 
 		viewname=path_name + ".html"
 		template_dir = os.path.join(cal_path,"template")
-		html_file = setting_file = os.path.join(template_dir , viewname)
-		html_file_content = self.get_html_content(path_name)
+		html_file  = os.path.join(template_dir , viewname)
+		html_file_content = self.get_html_content(path_name,**options)
+
+		css_name = name.lower()
+		css_file = os.path.join(self.static_path,css_name+ ".css")
+		css_content = self.get_css_content(css_name)
+		self._write_file(css_file,css_content)
 
 		self.add_content(controller_file,controller_file_content)
 		print "add success"
@@ -104,7 +133,7 @@ github : http://github.com/Qingluan
 	parser.add_argument('-i','--init',default=None)
 	parser.add_argument('-c','--add-controller',default=None)
 	parser.add_argument('-r','--re',default=False,type=bool)
-	
+	parser.add_argument('-t','--theme-choice',default=None)	
 	
 	# args,remind = parser.parse_known_args(args)
 	args = parser.parse_args()
@@ -133,5 +162,8 @@ if __name__ == "__main__":
 		tree.add_controller(args.init)
 
 	if args.add_controller:
-		tree.add_controller(args.add_controller)
+                if args.theme_choice:
+                    tree.add_controller(args.add_controller,theme=args.theme_choice)
+                else:
+                    tree.add_controller(args.add_controller)
 

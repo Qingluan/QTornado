@@ -4,6 +4,9 @@ class FillContentHandler(object):
 
 	def __init__(self):
 		self.content = InitContent
+                import os
+                self.static_res_path = os.path.join(os.getcwd(),"../resource/static")
+                print self.static_path
 
 	def get_init_controller_file_content(self):
 		handler_str = self.content['BaseHandler']
@@ -24,10 +27,32 @@ class FillContentHandler(object):
 		return setting_str
 
 
-	def get_html_content(self,html_name):
+	def get_html_content(self,html_name,**options):
+                def _fill_args(string,*args):
+                    try:
+                        print args
+                        new_str = string % tuple( args)
+                        return new_str
+                    except TypeError:
+                        args = list(args) + [args[0]]
+                        print args
+                        new_args = tuple(args )
+                        return _fill_args(string,*new_args)
+                if "theme" in options:
+                    html_str = self.content[options["theme"]]
+                    try:
+                        html_str = _fill_args(html_str,html_name) 
+
+                        return html_str
+                    except ValueError:
+                        return html_str
 		html_str = self.content['html']
-		html_str = html_str % (html_name,html_name)
+                html_str = _fill_args(html_str ,html_name)
 		return html_str
+        def get_css_content(self,css_name):
+                css_str = self.content['css']
+                css_str = css_str % (css_name)
+                return css_str
 
 	def get_main_content(self):
 		return self.content['main']

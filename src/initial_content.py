@@ -104,13 +104,22 @@ class %sHandler(BaseHandler):
 <html lang="en">
 <head>      
     <meta charset="UTF-8">
-    <title>%s</title>                                                        
+    <title>%s</title>     
+    <link href="static/bootstrap/dist/css/bootstrap.css" rel="stylesheet"></link>
+     <link href="static/css/%s.css" rel="stylesheet"></link>
 </head>     
 <body>      
-           <p>%s</p> 
+        <p>%s</p> 
+        <script src="static/jquery/dist/jquery.min.js"></script>
+        <script src="static/bootstrap/dist/js/bootstrap.js"></script>
 </body>     
 </html>
 	""",
+        'css':"""
+#written by qingluan
+#
+#this css file is belong to %s
+        """,
 	'main':"""
 #!/usr/bin/python
 ## write by qingluan 
@@ -124,6 +133,74 @@ if __name__ == "__main__":
 	appication.listen(8080)
 	tornado.ioloop.IOLoop.instance().start() 
 
-	"""
+	""",
+#this is a ad for our ISC 
+
+        'ISC':"""
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <link rel="stylesheet" type="text/css" href="static/bootstrap/dist/css/bootstrap.css"></link>
+            <title>{}</title>
+                
+                    <style type="text/css">
+                        b{
+                                font-weight: lighter;
+                                    }
+                                        h1,h3,h4 ,h2,h5{
+                                                font-weight: 100;
+                                                    }
+                                                        .good-words{
+                                                                margin-top: 20%;
+                                                                    }
+                                                                        </style>
+                                                                        </head>
+                                                                        <body>
+                                                                        <div class="pic">
+                                                                            <img src="static/images/hat.png" style="position: absolute;
+                                                                            left: 25%;
+                                                                            max-width: 200px;
+                                                                            bottom: 41%;
+                                                                            padding: 15px;
+                                                                            border-right: solid 1px;">
+                                                                            </div>
+                                                                                <div class="container" style="position: absolute;
+                                                                                bottom: 3%; margin-left: 20px">
+
+                                                                                        <p style="font-weight: 100;
+                                                                                        font-size: 15px;">Address: <small style="font-family: fantasy;" >113</small></p>   
+                                                                                                <p style="font-weight: 100;
+                                                                                                font-size: 15px;">Time: <small style="font-family: fantasy;">21:42</small></p>   
+                                                                                                    </div>
+                                                                                                        <div class="col-md-4" style="bottom: 33%;
+                                                                                                        position: absolute;
+                                                                                                        text-align: center;
+
+                                                                                                        right: 31%;font-weight: 100">
+                                                                                                                <div class="theme-main" style="
+                                                                                                                text-align: left;
+                                                                                                                margin-left: 11%;
+                                                                                                                        ">
+                                                                                                                                    <h1>ISA  </h1>
+                                                                                                                                                <h4 style="padding-top: 8px;margin-top:10px">Isa green hand  </h4>
+                                                                                                                                                            <h2 style="margin-top: 0px;padding-bottom: 26px"> Meet-and-greet </h2>h2</div>
+                                                                                                                                                                    
+                                                                                                                                                                            <span class="good-words" style="
+                                                                                                                                                                                    position: absolute;
+                                                                                                                                                                                            top: 98%;
+                                                                                                                                                                                                    left: 10%;
+                                                                                                                                                                                                            font-family: fantasy ;color:rgb(107, 167, 194)">
+                                                                                                                                                                                                                        <h5 style="margin: 0px;">The quieter you become </h5>
+                                                                                                                                                                                                                                    <h4 style="margin: 0px;"> The more you are able to hear </h4>h4</span>
+                                                                                                                                                                                                                                            
+
+                                                                                                                                                                                                                                                </div>
+                                                                                                                                                                                                                                                    <script src="static/jquery/dist/jquery.min.js"></script>
+                                                                                                                                                                                                                                                        <script type="text/javascript" src="static/bootstrap/dist/js/bootstrap.js" ></script>
+                                                                                                                                                                                                                                                        </body>
+                                                                                                                                                                                                                                                        </html>
+
+        """,
 
 }
