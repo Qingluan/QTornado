@@ -31,17 +31,22 @@ class TreeFile(FillContentHandler):
 
 	def __init__(self,root,**kargs):
 		self.root_path  = root
+
 		self.static_path = os.path.join(self.root_path,"static")
 
 		super(TreeFile, self).__init__()
 
 	@fileSave.FileSave
 	def initial_files(self,**options):
+
 		cal_path = self.root_path
 
 		def _path(fileName):
 			return os.path.join(self.root_path,fileName)
-
+		
+		if not os.path.exists(self.root_path):
+			os.mkdir(self.root_path)
+		
 		os.mkdir(_path("static"))
 		os.mkdir(_path("template"))
 
@@ -156,9 +161,12 @@ if __name__ == "__main__":
 	args = handle_args()
 	
 	if args.pro_name_path:
-		fileSave.workpath =  os.path.join(root_path,args.pro_name_path)
-		tree = TreeFile(args.pro_name_path)
-
+		if "/" in args.pro_name_path:
+			fileSave.workpath =  os.path.join(root_path,args.pro_name_path)
+			tree = TreeFile(args.pro_name_path)
+		else :
+			fileSave.workpath = "./"
+			tree = TreeFile(args.pro_name_path)
 
 	if args.init:
 		if args.re:

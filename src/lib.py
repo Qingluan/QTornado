@@ -27,6 +27,7 @@ class PathDecorator(object):
 				print "rm old version "
 
 			if not os.path.exists(self.workpath):
+				print "mkdir root path"
 				os.mkdir(self.workpath)				
 
 			res =  func(*args,**kargs)
