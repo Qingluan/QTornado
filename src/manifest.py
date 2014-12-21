@@ -19,7 +19,7 @@ weite by Qingluan
 github : http://github.com/Qingluan
 	"""
 	parser = argparse.ArgumentParser(usage='it is usage for qingluanTornado ', description=desc)
-	parser.add_argument('-u','--unintall',default=True)
+	parser.add_argument('-u','--unintall',action="store_true",default=False)
 	parser.add_argument('-c','--add-controller',default=None)
 	parser.add_argument('-t','--theme-choice',default=None)	
 	

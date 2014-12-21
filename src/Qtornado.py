@@ -1,10 +1,13 @@
+#!/usr/bin/python
+
 import sys
 import os
-from init_filter import FillContentHandler
+
 
 
 src_path = '/usr/local/lib/python2.7/site-packages/QTornado/src'
 resource_path = '/usr/local/lib/python2.7/site-packages/QTornado/resource/static'
+
 if not os.path.exists(src_path) : 
 	print "not installed  completed ... yet or version isn't match"
 	src_path = "./" 
@@ -14,6 +17,8 @@ if not os.path.exists(src_path) :
 sys.path += [src_path]
 
 # load functional lib 
+
+from init_filter import FillContentHandler
 from lib import PathDecorator
 from lib import XmlTag
 import argparse
@@ -61,22 +66,21 @@ class TreeFile(FillContentHandler):
 		self._write_file(controller_file,controller_file_content)
 		print " ok"
 
-		print "init setting ,"
+		print "init setting ",
 		self._write_file(setting_file, setting_file_content)
 		print "\t ok"
 
-		print "init html ,"
+		print "init html ",
 		self._write_file(html_file, html_file_content)
 		print "\t ok"
 
-		print "run file load ,"
+		print "run file load ",
 		self._write_file(main_file, main_file_str)
 		print "\t ok"
 
 		print "static res build ...",
 		com = "cp -a {}/*  {}".format(resource_path,_path("static"))
-		print com
-		# os.popen(com)
+		os.popen(com)
 		print "ok in  "
 
 	def _write_file(self,file_name,content):
@@ -129,12 +133,13 @@ weite by Qingluan
 github : http://github.com/Qingluan
 	"""
 	parser = argparse.ArgumentParser(usage='it is usage for qingluanTornado ', description=desc)
-	parser.add_argument('pro_name_path',help="this argu is represent project's name")
+	parser.add_argument('-p','--pro_name_path',help="this argu is represent project's name")
 	parser.add_argument('-i','--init',default=None)
 	parser.add_argument('-c','--add-controller',default=None)
 	parser.add_argument('-r','--re',default=False,type=bool)
 	parser.add_argument('-t','--theme-choice',default=None)	
-	
+	parser.add_argument('-u','--uninstall',action="store_true",default=False)
+
 	# args,remind = parser.parse_known_args(args)
 	args = parser.parse_args()
 
@@ -149,9 +154,10 @@ github : http://github.com/Qingluan
 
 if __name__ == "__main__":
 	args = handle_args()
-
-	fileSave.workpath =  os.path.join(root_path,args.pro_name_path)
-	tree = TreeFile(args.pro_name_path)
+	
+	if args.pro_name_path:
+		fileSave.workpath =  os.path.join(root_path,args.pro_name_path)
+		tree = TreeFile(args.pro_name_path)
 
 
 	if args.init:
@@ -162,8 +168,13 @@ if __name__ == "__main__":
 		tree.add_controller(args.init)
 
 	if args.add_controller:
-                if args.theme_choice:
-                    tree.add_controller(args.add_controller,theme=args.theme_choice)
-                else:
-                    tree.add_controller(args.add_controller)
+		if args.theme_choice:
+		    tree.add_controller(args.add_controller,theme=args.theme_choice)
+		else:
+			tree.add_controller(args.add_controller)
+	if args.uninstall :
+		if os.path.exists('/usr/local/bin/Qtornado.py'):
+			os.popen("rm /usr/local/bin/Qtornado.py*").read()
+		if os.path.exists('/usr/local/lib/python2.7/site-packages/QTornado'):
+			os.popen("rm -rf /usr/local/lib/python2.7/site-packages/QTornado")
 
