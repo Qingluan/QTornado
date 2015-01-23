@@ -49,7 +49,7 @@ class FillContentHandler(object):
             except ValueError:
                 return html_str
         if "extends" in options:
-            html_str = sel.content["extends_html"]
+            html_str = self.content["extends_html"]
             try:
                 html_str = _fill_args(html_str,options['extends'])
                 html_str = html_str.replace(r'$', r'%')
