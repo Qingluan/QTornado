@@ -23,7 +23,7 @@ github : http://github.com/Qingluan
     parser.add_argument('-u','--unintall',action="store_true",default=False,help="uninstall this project")
     parser.add_argument('-c','--add-controller',default=None)
     parser.add_argument('-t','--theme-choice',default=None) 
-        parser.add_argument('-e','--extends',default=None,help="this will create a new html by extends another template ")  
+    parser.add_argument('-e','--extends',default=None,help="this will create a new html by extends another template ")  
     # args,remind = parser.parse_known_args(args)
     args = parser.parse_args()
 
