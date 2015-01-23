@@ -17,7 +17,7 @@ class FillContentHandler(object):
 
 	def get_new_controller(self,name):
 		# ensuer str 's first char is upper
-		controller_name = name[0].upper() + name[1:]
+		controller_name = name[0].lower() + name[1:]
 		controller__str = self.content['handler']
 		controller__str = controller__str % (controller_name,controller_name,controller_name,controller_name)
 		return controller__str

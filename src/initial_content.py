@@ -105,13 +105,13 @@ class %sHandler(BaseHandler):
 <head>      
     <meta charset="UTF-8">
     <title>%s</title>     
-    <link href="static/bootstrap/dist/css/bootstrap.css" rel="stylesheet"></link>
-     <link href="static/css/%s.css" rel="stylesheet"></link>
+    <link href="/static/bootstrap/dist/css/bootstrap.css" rel="stylesheet"></link>
+     <link href="/static/css/%s.css" rel="stylesheet"></link>
 </head>     
 <body>      
         <p>%s</p> 
-        <script src="static/jquery/dist/jquery.min.js"></script>
-        <script src="static/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="/static/jquery/dist/jquery.min.js"></script>
+        <script src="/static/bootstrap/dist/js/bootstrap.js"></script>
 </body>     
 </html>
 	""",

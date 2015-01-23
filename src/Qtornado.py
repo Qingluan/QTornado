@@ -118,6 +118,7 @@ class TreeFile(FillContentHandler):
 		html_file_content = self.get_html_content(path_name,**options)
 
 		css_name = name.lower()
+                css_dir = os.path.join(self.static_path,"css")
 		css_file = os.path.join(self.static_path,css_name+ ".css")
 		css_content = self.get_css_content(css_name)
 		self._write_file(css_file,css_content)
