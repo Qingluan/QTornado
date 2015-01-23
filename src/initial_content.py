@@ -99,19 +99,30 @@ class %sHandler(BaseHandler):
 		# self.redirect()  # redirect or reply some content
 		self.write("hello world")
 	""",
+#this is a extends templates  , '$' is special syn , need to take a transation to '%' 
 	'html':"""
+
 <!DOCTYPE html>
 <html lang="en">
 <head>      
     <meta charset="UTF-8">
     <title>%s</title>     
     <link href="/static/bootstrap/dist/css/bootstrap.css" rel="stylesheet"></link>
+    {$ block head_css $}
      <link href="/static/css/%s.css" rel="stylesheet"></link>
+    {$ end $}
+    {$ block extends_css $}
+    {$ end $}
 </head>     
 <body>      
         <p>%s</p> 
         <script src="/static/jquery/dist/jquery.min.js"></script>
         <script src="/static/bootstrap/dist/js/bootstrap.js"></script>
+        {$ block body_js $}
+        <script src="/static/js/%s.js"></script>
+        {$ end $}
+        {$ block extends_js $}
+        {$ end $}
 </body>     
 </html>
 	""",
@@ -120,7 +131,23 @@ class %sHandler(BaseHandler):
 #
 #this css file is belong to %s
         """,
-	'main':"""
+#this is a extends templates  , '$' is special syn , need to take a transation to '%' 
+'extends_html':"""
+{$ extends "%s.html"  $} 
+    {$ block extends_css $}
+        <link href="/static/css/%s.css" rel="stylesheet"></link>
+    {$ end  $}
+
+    {$ block extends_js $}
+    <script src="/static/js/%s.js"></script>
+    {$ end $}
+{$ end $}
+        """,
+        'js':"""
+        // this is js file for %s 
+        """,
+	
+        'main':"""
 #!/usr/bin/python
 ## write by qingluan 
 # just a run file 
