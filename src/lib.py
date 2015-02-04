@@ -46,6 +46,7 @@ class XmlTag(object):
 		re_compile = re.compile(r'(\#<{}>)'.format(tag))
 		print re_compile.pattern
 		new_content = ""
+                new = new[0].upper() + new.lower()[1:]
 		for line in self.read_fp:
 			if not re_compile.findall(line):
 
