@@ -46,14 +46,13 @@ class XmlTag(object):
 		re_compile = re.compile(r'(\#<{}>)'.format(tag))
 		print re_compile.pattern
 		new_content = ""
-                new = new[0].upper() + new.lower()[1:]
 		for line in self.read_fp:
 			if not re_compile.findall(line):
 
 				new_content += line
 			else :
 				print "add  route : {} ".format(new[1:-1])
-                                new_content += "\t\t{}\n#<{}></{}>\n".format(new,tag,tag[0].upper() + tag[1:] )
+                                new_content += "\t\t{}\n#<{}></{}>\n".format(new,tag,tag )
 
 		self.read_fp.close()
 		with open(self.file_name,'w') as fp:
