@@ -11,7 +11,7 @@ class FillContentHandler(object):
     def get_init_controller_file_content(self):
         handler_str = self.content['BaseHandler']
         index_handler_str = self.content['handler']
-        index_handler_str = index_handler_str %("Index","Index","Index","Index")
+        index_handler_str = index_handler_str %("Index","index","/","Index")
 
         return "\n".join([handler_str,index_handler_str])
 
