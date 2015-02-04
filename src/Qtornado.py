@@ -111,6 +111,7 @@ class TreeFile(FillContentHandler):
         setting_file = os.path.join(cal_path,"setting.py")
         xmlTag = XmlTag(setting_file)
         handler_name = handler_name[0].upper() + handler_name[1:]
+        print handler_name
         xmlTag.changeTag("route", "(r'/{}',{}),".format(path_name,handler_name))
 
         viewname=path_name + ".html"
