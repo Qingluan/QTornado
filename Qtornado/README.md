@@ -13,7 +13,7 @@
     a foolish experence contribute me  to make this ..
     this is a very small and simple web framework base on tornado 
 ## Install 
-    curl -fsSL https://raw.githubusercontent.com/Qingluan/QTornado/master/install.sh | sh 
+    pip3 install Qtornado
 ## Useage 
     
     usage: it is usage for qingluanTornado 
@@ -53,7 +53,7 @@ if you want to change port , write _setting.py_ , change <code>port=8080</code>
 
 and you can change your db_engine by overide  generated file "setting.py"
 
-    db_engine = motor.MotorClient()  # default is mongo db
+    db_engine = Mongo('local')  # default is mongo db, this engine is QmongoHelper 
 
 ...
 
