@@ -2,34 +2,33 @@
 
 import sys
 import os
+import argparse
 
 
+root_path= os.path.dirname(__file__)
+resource_path = os.path.join(root_path, 'res/static')
 
-src_path = '/usr/local/lib/python2.7/site-packages/QTornado/src'
-resource_path = '/usr/local/lib/python2.7/site-packages/QTornado/resource/static'
-
-if not os.path.exists(src_path) : 
-    print( "not installed  completed ... yet or version isn't match")
-    src_path = "./" 
-    resource_path = "../resource/static"
-
-
-sys.path += [src_path]
 
 # load functional lib 
 
-from init_filter import FillContentHandler
-from lib import PathDecorator
-from lib import XmlTag
-import argparse
+from Qtornado.init_filter import FillContentHandler
+from Qtornado.lib import PathDecorator
+from Qtornado.lib import XmlTag
+from Qtornado.log import LogControl
 
-root_path= os.path.dirname(__file__)
+LogControl.LOG_LEVEL |= LogControl.INFO
+LogControl.LOG_LEVEL |= LogControl.OK
+
+
+if not os.path.exists(resource_path):
+    LogControl.err("not found res fold")
+    sys.exit(0)
 
 fileSave = PathDecorator(root_path)
 
 class TreeFile(FillContentHandler):
 
-    def __init__(self,root,**kargs):
+    def __init__(self,root, **kargs):
         self.root_path  = root
 
         self.static_path = os.path.join(self.root_path,"static")
@@ -65,28 +64,28 @@ class TreeFile(FillContentHandler):
 
         print( "manifest file copy is\t",)
         os.popen("cp {}  {}".format(os.path.join( src_path,"manifest.py"), cal_path))
-        print( "  ok")
+        LogControl.info( "  ok")
 
         print( "init  control \t",)
         self._write_file(controller_file,controller_file_content)
-        print( " ok")
+        LogControl.info( " ok")
 
         print( "init setting ",)
         self._write_file(setting_file, setting_file_content)
-        print( "\t ok")
+        LogControl.info( "\t ok")
 
         print( "init html ",)
         self._write_file(html_file, html_file_content)
-        print( "\t ok")
+        LogControl.info( "\t ok")
 
         print( "run file load ",)
         self._write_file(main_file, main_file_str)
-        print( "\t ok")
+        LogControl.info( "\t ok")
 
         print( "static res build ...",)
         com = "cp -a {}/*  {}".format(resource_path,_path("static"))
         os.popen(com)
-        print( "ok in  ")
+        LogControl.info( "ok")
 
     def _write_file(self,file_name,content):
         with open(file_name,"w") as file_handler:
@@ -132,7 +131,7 @@ class TreeFile(FillContentHandler):
         self._write_file(js_file, js_content)
 
         self.add_content(controller_file,controller_file_content)
-        print( "add success")
+        LogControl.ok( "add success")
         self._write_file(html_file, html_file_content)
 
     def get_path_handler_name(self,string):
@@ -159,7 +158,7 @@ github : http://github.com/Qingluan
     args = parser.parse_args()
     return args
 
-if __name__ == "__main__":
+def main():
     args = handle_args()
     
     if args.pro_name_path:
@@ -189,3 +188,6 @@ if __name__ == "__main__":
             os.popen("rm /usr/local/bin/Qtornado.py*").read()
         os.poepn("pip3 uninstall -y Qtornado")
 
+
+if __name__ == '__main__':
+    main()
