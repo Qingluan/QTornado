@@ -3,7 +3,11 @@ import os
 import argparse
 
 # load functional lib 
-from Qtornado.Qtornado import TreeFile
+from Qtornado.qtornado import TreeFile
+from Qtornado.log import LogControl
+
+LogControl.LOG_LEVEL |= LogControl.INFO
+LogControl.LOG_LEVEL |= LogControl.OK
 
 root_path = os.path.dirname(__file__)
 
@@ -35,10 +39,23 @@ if __name__ == "__main__":
         os.popen("rm -rf ./*")
 
     if args.add_controller:
-        tree.add_controller(
-            args.add_controller, 
-            extends=args.extends, 
-            websocket=args.websocket,
-            theme=args.theme_choice)
+        if args.extends and args.theme_choice:
+            tree.add_controller(
+                args.add_controller, 
+                extends=args.extends, 
+                websocket=args.websocket,
+                theme=args.theme_choice)
+        
+        elif args.extends:
+            tree.add_controller(
+                args.add_controller, 
+                extends=args.extends, 
+                websocket=args.websocket)
 
-
+        elif args.theme_choice:
+            tree.add_controller(
+                args.add_controller, 
+                theme=args.theme_choice, 
+                websocket=args.websocket)
+        else:
+            LogControl.err("err args")

@@ -7,7 +7,7 @@ InitContent = {
 # include db and debug , static path 
 from os import path
 # here to load all controllers
-from log import LogControl
+from Qtornado.log import LogControl
 from QmongoHelper import Mongo
 from controller import *
 
@@ -23,7 +23,7 @@ LogControl.LOG_LEVEL |= LogControl.INFO
 
 Settings = {
         'db':db_engine,
-        'L': LogControl
+        'L': LogControl,
         'debug':True,
         'autoreload':True,
         'cookie_secret':'This string can be any thing you want',
@@ -60,6 +60,7 @@ from tornado.websocket import WebSocketHandler
 class BaseHandler(tornado.web.RequestHandler):
     def prepare(self):
         self.db = self.settings['db']
+        self.L = self.settings['L']
     def get_current_user(self):
         return (self.get_cookie('user'),self.get_cookie('passwd'))
     def get_current_secure_user(self):
@@ -111,6 +112,8 @@ class %sHandler(BaseHandler):
         self.template = "template/%s.html"
 
     def get(self):
+        # L is log function , which include ok , info , err , fail, wrn
+        self.L.ok('got')
         return self.render(self.template, post_page="/%s")
 
     @tornado.web.asynchronous
@@ -178,6 +181,14 @@ class %sHandler(SocketHandler):
     <script src="/static/bootstrap/dist/js/bootstrap.js"></script>
     {$ block body_js $}
         <script src="/static/js/%s.js"></script>
+        <!--
+        <script type="text/javascript">
+            websocket = new web_client("ws://localhost:8080/[url]")
+            websocket.on_msg(function(json){
+                console.log(json);
+            }
+        </script> 
+        -->
     {$ end $}
 
     {$ block extends_js $}
@@ -200,6 +211,14 @@ class %sHandler(SocketHandler):
 
     {$ block extends_js $}
     <script src="/static/js/%s.js"></script>
+    <!--
+    <script type="text/javascript">
+        websocket = new web_client("ws://localhost:8080/[url]")
+        websocket.on_msg(function(json){
+            console.log(json);
+        }
+    </script> 
+    -->
     {$ end $}
         """,
         'js':"""

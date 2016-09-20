@@ -10,9 +10,10 @@ setup(name='Qtornado',
     license='MIT',
     zip_safe=False,
     packages=find_packages(),
+		include_package_data=True,
     install_requires=['termcolor','tornado', 'QmongoHelper'],
     entry_points={
-      'console_scripts': ['Qtornado=Qtornado:main']
+      'console_scripts': ['Qtornado=Qtornado.qtornado:main']
     },
  
 )

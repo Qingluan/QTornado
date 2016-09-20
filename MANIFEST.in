@@ -1,0 +1,16 @@
+
+include Qtornado/README.md
+include Qtornado/res/static/bootstrap/dist/js/*
+include Qtornado/res/static/bootstrap/dist/css/*
+include Qtornado/res/static/bootstrap/dist/font/*
+include Qtornado/res/static/bootstrap/font/*
+include Qtornado/res/static/bootstrap/grunt/*
+include Qtornado/res/static/bootstrap/js/*
+include Qtornado/res/static/bootstrap/less/mixins/*
+include Qtornado/res/static/bootstrap/less/*
+
+include Qtornado/res/static/css/*
+include Qtornado/res/static/images/*
+include Qtornado/res/static/jquery/dist/*
+
+include Qtornado/res/static/js/*

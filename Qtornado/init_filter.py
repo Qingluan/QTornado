@@ -6,7 +6,7 @@ class FillContentHandler(object):
         self.content = InitContent
         import os
         self.static_res_path = os.path.join(os.getcwd(),"../resource/static")
-        # print( self.static_path)
+        print( self.static_path)
 
     def get_init_controller_file_content(self):
         handler_str = self.content['BaseHandler']
@@ -21,7 +21,10 @@ class FillContentHandler(object):
         controller_name_low = name[0].lower() + name[1:]
 
         controller__str = self.content['handler'] if not websocket else self.content['websocket_handler']
-        controller__str = controller__str % (controller_name,controller_name,controller_name_low,controller_name_low)
+        if websocket:
+            controller__str = controller__str % (controller_name, controller_name, controller_name)
+        else:
+            controller__str = controller__str % (controller_name,controller_name,controller_name_low,controller_name_low)
         return controller__str
 
     def get_init_setting_content(self):
@@ -60,7 +63,7 @@ class FillContentHandler(object):
         html_str = html_str.replace(r'$', r'%')
         return html_str
 
-    def get_css_content(self,css_name):
+    def get_css_content(self, css_name):
         css_str = self.content['css']
         css_str = css_str % (css_name)
         return css_str

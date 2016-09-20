@@ -5,9 +5,9 @@ import os
 import argparse
 
 
-root_path= os.path.dirname(__file__)
+root_path = os.path.dirname(__file__)
 resource_path = os.path.join(root_path, 'res/static')
-
+src_path = root_path
 
 # load functional lib 
 
@@ -97,7 +97,7 @@ class TreeFile(FillContentHandler):
             file_handler.write(content)
 
     @fileSave.FileSave
-    def add_controller(self,name,**options):
+    def add_controller(self,name, **options):
         print( "add controller : {}".format(name) ,)
         cal_path = self.root_path
 
@@ -105,7 +105,10 @@ class TreeFile(FillContentHandler):
         path_name, handler_name =  self.get_path_handler_name(name)
 
         controller_file = os.path.join(cal_path,"controller.py")
-        controller_file_content = self.get_new_controller(path_name)
+        if 'websocket' in options:
+            controller_file_content = self.get_new_controller(path_name, websocket=options['websocket'])
+        else:
+            controller_file_content = self.get_new_controller(path_name)
 
         setting_file = os.path.join(cal_path,"setting.py")
         xmlTag = XmlTag(setting_file)
@@ -169,12 +172,15 @@ def main():
             fileSave.workpath = "./"
             tree = TreeFile(args.pro_name_path)
 
-    if args.init:
+        
+    if args.pro_name_path:
         if args.re:
             tree.initial_files(re=True)
         else:
             tree.initial_files()
-        tree.add_controller(args.init)
+        if args.init:
+            tree.add_controller(args.init)    
+    
 
     if args.add_controller:
         if args.theme_choice:
@@ -186,7 +192,9 @@ def main():
     if args.uninstall :
         if os.path.exists('/usr/local/bin/Qtornado.py'):
             os.popen("rm /usr/local/bin/Qtornado.py*").read()
-        os.poepn("pip3 uninstall -y Qtornado")
+        fp = os.popen("which Qtornado").read().strip()
+        os.popen('rm %s' % fp)
+        os.popen("pip3 uninstall -y qtornado")
 
 
 if __name__ == '__main__':
