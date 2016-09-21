@@ -179,8 +179,46 @@ class %sHandler(SocketHandler):
     {$ end $}
 </head>     
 <body>      
-    <h3>.. Qtornado ..</h3>
-    <p>%s</p>
+    <div class="main" class='main'>
+        <div class="body">
+
+            <div class="left col-md-4 col-sm-9 col-xs-3">
+            {$ module Nav([
+            {
+                'txt':'Index',
+                'link': '/',
+                'active': '1',
+                'tq': '1'
+            },
+            {
+                'txt':'Sql Inject',
+                'link': '/sqlinject',
+
+            },] ,title='Index') $}
+            {$ block left $}
+            {$ end $}
+                
+            </div>
+            <div class="content col-md-8 col-xs-9">
+                <div class="head">
+                {$ block head $}
+                    <h1>Hacker Sites <small>ok?</small></h1>
+                    <p>%s</p>
+                {$ end $}
+                </div>
+            {$ block content $}
+                <p>test</p>
+                
+            {$ end $}
+            </div>
+        </div>
+        <div class="tail">
+        {$ block tail $}
+        {$ end $}
+        </div>
+    </div>
+    
+
     <script src="/static/jquery/dist/jquery.min.js"></script>
     <script src="/static/bootstrap/dist/js/bootstrap.js"></script>
     {$ block body_js $}
