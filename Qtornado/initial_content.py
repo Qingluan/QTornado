@@ -427,6 +427,76 @@ class Table(tornado.web.UIModule):
         )
 
 
+
+class Nav(tornado.web.UIModule):
+    \"\"\"
+    items example:
+        [{
+            'txt':'xxx',
+            'link': '/index',
+            'active': '1',
+            'tq': '1'
+        },
+        {
+            'txt':'xxx',
+            'link': '/url',
+
+        },
+        {
+            'txt':'xxx',
+            'link': '/index2',
+        }]
+    \"\"\"
+
+    def render(self, items, type='normal', title='Dashboard', nav_type='stacked'):
+        return self.render_string('template/ui_templates/{t}_nav.html'.format(t=type), 
+            items=items,
+            type=nav_type,
+            title=title,
+        )
+
+    def embedded_css(self):
+        return '''
+.tq{
+    padding-left: 15px;
+    padding-right: 15px;
+    margin-bottom: 5px;
+    font-size: 85%;
+    font-weight: 100;
+    letter-spacing: 1px;
+    color: #51586a;
+    text-transform: uppercase;
+    
+}
+
+.nav > li > a{
+    position: relative;
+    display: block;
+    padding: 7px 15px 7px ;
+    padding-left: 27px;
+    border-radius: 4px;
+}
+
+.nav > li.active > a {
+    color: #252830;
+    background-color: #e5e5e5;
+}
+li.divider{
+    width: 70%;
+    align-self: center;
+    align-content: center;
+    left:10%; 
+    height: 1px;
+    margin: 9px 1px;*
+    margin: -5px 0 5px;
+    overflow: hidden;
+    bottom:10px;
+    background-color: #e5e5e5;
+    border-bottom: 1px solid #e5e5e5;    
+}
+        '''
+
+
         """,
 
 }

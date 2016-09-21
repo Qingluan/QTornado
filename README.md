@@ -78,5 +78,24 @@ or you want to add a websocket controler
 
 <code>{% module Table(title='title',[header1, header2, header3], *items ,table_type='striped') %} </code>
 
+'''
+    items example:
+        [{
+            'txt':'xxx',
+            'link': '/index',
+            'active': '1',
+            'tq': '1'
+        },
+        {
+            'txt':'xxx',
+            'link': '/url',
 
+        },
+        {
+            'txt':'xxx',
+            'link': '/index2',
+        }]
+'''
+
+<code>{% module Nav(items) %}</code>
 
