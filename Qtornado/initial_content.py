@@ -11,6 +11,9 @@ from Qtornado.log import LogControl
 from QmongoHelper import Mongo
 from controller import *
 
+# load ui modules
+import ui
+
 # db engine 
 db_engine = Mongo('local')
 
@@ -25,6 +28,7 @@ Settings = {
         'db':db_engine,
         'L': LogControl,
         'debug':True,
+        "ui_modules": ui,
         'autoreload':True,
         'cookie_secret':'This string can be any thing you want',
         'static_path' : static_path,
@@ -234,10 +238,14 @@ import tornado.ioloop
 from tornado.ioloop import IOLoop
 from setting import  appication, port
 
-if __name__ == "__main__":
-    appication.listen(port)
-    tornado.ioloop.IOLoop.instance().start() 
 
+def main():
+    appication.listen(port)
+    tornado.ioloop.IOLoop.instance().start()
+
+
+if __name__ == "__main__":
+    main()
     """,
 #this is a ad for our ISC 
 
@@ -245,66 +253,179 @@ if __name__ == "__main__":
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-        <link rel="stylesheet" type="text/css" href="static/bootstrap/dist/css/bootstrap.css"></link>
-            <title>{}</title>
-                
-                    <style type="text/css">
-                        b{
-                                font-weight: lighter;
-                                    }
-                                        h1,h3,h4 ,h2,h5{
-                                                font-weight: 100;
-                                                    }
-                                                        .good-words{
-                                                                margin-top: 20%;
-                                                                    }
-                                                                        </style>
-                                                                        </head>
-                                                                        <body>
-                                                                        <div class="pic">
-                                                                            <img src="static/images/hat.png" style="position: absolute;
-                                                                            left: 25%;
-                                                                            max-width: 200px;
-                                                                            bottom: 41%;
-                                                                            padding: 15px;
-                                                                            border-right: solid 1px;">
-                                                                            </div>
-                                                                                <div class="container" style="position: absolute;
-                                                                                bottom: 3%; margin-left: 20px">
+<meta charset="UTF-8">
+<link rel="stylesheet" type="text/css" href="static/bootstrap/dist/css/bootstrap.css"></link>
+<title>{}</title>
 
-                                                                                        <p style="font-weight: 100;
-                                                                                        font-size: 15px;">Address: <small style="font-family: fantasy;" >113</small></p>   
-                                                                                                <p style="font-weight: 100;
-                                                                                                font-size: 15px;">Time: <small style="font-family: fantasy;">21:42</small></p>   
-                                                                                                    </div>
-                                                                                                        <div class="col-md-4" style="bottom: 33%;
-                                                                                                        position: absolute;
-                                                                                                        text-align: center;
+<style type="text/css">
+b{
+font-weight: lighter;
+}
+h1,h3,h4 ,h2,h5{
+font-weight: 100;
+}
+.good-words{
+margin-top: 20%;
+}
+</style>
+</head>
+<body>
+<div class="pic">
+<img src="static/images/hat.png" style="position: absolute;
+left: 25%;
+max-width: 200px;
+bottom: 41%;
+padding: 15px;
+border-right: solid 1px;">
+</div>
+<div class="container" style="position: absolute;
+bottom: 3%; margin-left: 20px">
 
-                                                                                                        right: 31%;font-weight: 100">
-                                                                                                                <div class="theme-main" style="
-                                                                                                                text-align: left;
-                                                                                                                margin-left: 11%;
-                                                                                                                        ">
-                                                                                                                                    <h1>ISA  </h1>
-                                                                                                                                                <h4 style="padding-top: 8px;margin-top:10px">Isa green hand  </h4>
-                                                                                                                                                            <h2 style="margin-top: 0px;padding-bottom: 26px"> Meet-and-greet </h2>h2</div>
-                                                                                                                                                                    
-                                                                                                                                                                            <span class="good-words" style="
-                                                                                                                                                                                    position: absolute;
-                                                                                                                                                                                            top: 98%;
-                                                                                                                                                                                                    left: 10%;
-                                                                                                                                                                                                            font-family: fantasy ;color:rgb(107, 167, 194)">
-                                                                                                                                                                                                                        <h5 style="margin: 0px;">The quieter you become </h5>
-                                                                                                                                                                                                                                    <h4 style="margin: 0px;"> The more you are able to hear </h4>h4</span>
-                                                                                                                                                                                                                                            
+<p style="font-weight: 100;
+font-size: 15px;">Address: <small style="font-family: fantasy;" >113</small></p>   
+<p style="font-weight: 100;
+font-size: 15px;">Time: <small style="font-family: fantasy;">21:42</small></p>   
+</div>
+<div class="col-md-4" style="bottom: 33%;
+position: absolute;
+text-align: center;
 
-                                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                                                    <script src="static/jquery/dist/jquery.min.js"></script>
-                                                                                                                                                                                                                                                        <script type="text/javascript" src="static/bootstrap/dist/js/bootstrap.js" ></script>
-                                                                                                                                                                                                                                                        </body>
-                                                                                                                                                                                                                                                        </html>
+right: 31%;font-weight: 100">
+<div class="theme-main" style="
+text-align: left;
+margin-left: 11%;
+">
+<h1>ISA  </h1>
+<h4 style="padding-top: 8px;margin-top:10px">Isa green hand  </h4>
+<h2 style="margin-top: 0px;padding-bottom: 26px"> Meet-and-greet </h2>h2</div>
+
+<span class="good-words" style="
+position: absolute;
+top: 98%;
+left: 10%;
+font-family: fantasy ;color:rgb(107, 167, 194)">
+<h5 style="margin: 0px;">The quieter you become </h5>
+<h4 style="margin: 0px;"> The more you are able to hear </h4>h4</span>
+
+
+</div>
+<script src="static/jquery/dist/jquery.min.js"></script>
+<script type="text/javascript" src="static/bootstrap/dist/js/bootstrap.js" ></script>
+</body>
+</html>
+
+        """,
+        'ui_modules': """
+import tornado.web
+
+
+class Card(tornado.web.UIModule):
+    
+    def render(self, title, img_url='images/hat.png', content='...', html=None):
+        return self.render_string('template/ui_templates/card.html', 
+            title=title, 
+            img_url=img_url,
+            html=html,
+            content=content,
+        )
+
+    
+    def embedded_css(self):
+        return '''
+            .card-container {
+                background: #ebebeb;
+                margin:10px;
+                border-radius: 25px; 
+            }
+
+            .card-container > .card {
+                background: #fafafa;
+                border: 2px solid white;
+                border-radius: 20px;
+                margin: 2px;
+            }
+
+            .card > img {
+                width: 60px;
+                height: 60px;
+                float: left;
+                margin-right: 30px;
+                margin-bottom: 30px;
+                padding: 4px;
+                border: 2px solid #fff;
+                background: rgb(229, 229, 229);
+
+            }
+        '''
+
+
+class Inputs(tornado.web.UIModule):
+    \"\"\"
+    type: horizontal/ inline . this will be parse to form-horizontal/ form-inline in bootstrap
+    \"\"\"
+
+    types = (
+        'text',
+        'file',
+        'email',
+        'submit',
+        'button',
+        'checkbox',
+        'password',
+    )
+
+    def classify(self, name):
+        res = name.split(":")
+        if len(res) == 2:
+            tpe, name = res
+            if tpe not in Inputs.types:
+                name, v = res
+                return ['text', name, v]
+            else:
+                return [tpe, name, '']
+        elif len(res) == 3:
+            tpe, name, value = res
+            if tpe not in Inputs.types:
+                raise Exception("not found input type $s" $ tpe)
+            return [tpe, name, value]
+        elif len(res) == 1:
+            return ['text', res[0], '']
+
+
+    def render(self, *inputs, type='normal', title=None, form_type='horizontal', action='#'):
+        inputs = [ self.classify(input) for input in inputs ]
+        return self.render_string('template/ui_templates/{t}_inputs.html'.format(t=type), 
+            inputs=inputs,
+            type=form_type,
+            title=title,
+            action=action,
+        )
+
+
+    # def html_body(self):
+    #     return '<script>document.write("Hello!")</script>'
+
+
+class Table(tornado.web.UIModule):
+
+    def rows(self, head_num, items):
+        body = [[items[ii*head_num + i] for i in range(head_num)] for ii in range(int(len(items) / head_num ))]
+        if len(items) $ head_num != 0:
+            yu = len(items) $ head_num
+            all_len = len(items)
+            return body + [[items[i] for i in range(all_len - yu, all_len)]]
+        return body
+
+
+    def render(self,table_headers , *table_items, type='normal', title='', table_type='striped'):
+        items = self.rows(len(table_headers), table_items)
+        return self.render_string('template/ui_templates/{t}_table.html'.format(t=type), 
+            headers=table_headers,
+            items=items,
+            type=table_type,
+            title=title,
+        )
+
 
         """,
 

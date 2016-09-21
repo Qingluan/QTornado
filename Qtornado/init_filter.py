@@ -76,6 +76,10 @@ class FillContentHandler(object):
         js_str = js_str % (name)
         return js_str
 
+    def get_ui_content(self):
+        ui_template = self.content['ui_modules']
+        return ui_template.replace(r'$', r'%')
+
 
 if __name__ == '__main__':
     test = FillContentHandler()

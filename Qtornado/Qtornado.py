@@ -7,6 +7,7 @@ import argparse
 
 root_path = os.path.dirname(__file__)
 resource_path = os.path.join(root_path, 'res/static')
+template_path = os.path.join(root_path, 'res/ui_templates')
 src_path = root_path
 
 # load functional lib 
@@ -31,7 +32,7 @@ class TreeFile(FillContentHandler):
     def __init__(self,root, **kargs):
         self.root_path  = root
 
-        self.static_path = os.path.join(self.root_path,"static")
+        self.static_path = os.path.join(self.root_path, "static")
 
         super(TreeFile, self).__init__()
 
@@ -48,6 +49,7 @@ class TreeFile(FillContentHandler):
         
         os.mkdir(_path("static"))
         os.mkdir(_path("template"))
+        os.mkdir(_path("template/ui_templates"))
 
 
         controller_file = _path("controller.py")
@@ -61,6 +63,9 @@ class TreeFile(FillContentHandler):
 
         main_file = _path("main.py")
         main_file_str = self.get_main_content()
+
+        ui_file = _path("ui.py")
+        ui_file_str = self.get_ui_content()
 
         print( "manifest file copy is\t",)
         os.popen("cp {}  {}".format(os.path.join( src_path,"manifest.py"), cal_path))
@@ -83,11 +88,17 @@ class TreeFile(FillContentHandler):
         LogControl.info( "\t ok")
 
         print( "static res build ...",)
-        com = "cp -a {}/*  {}".format(resource_path,_path("static"))
+        com = "cp -a {}/*  {}".format(resource_path, _path("static"))
         os.popen(com)
         LogControl.info( "ok")
 
-    def _write_file(self,file_name,content):
+        print("init ui modules")
+        self._write_file(ui_file, ui_file_str)
+        com = "cp -a {} {}".format(template_path, _path("template"))
+        os.popen(com)
+        LogControl.info("ok")
+
+    def _write_file(self,file_name, content):
         with open(file_name,"w") as file_handler:
             file_handler.write(content)
 

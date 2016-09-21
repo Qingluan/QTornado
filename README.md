@@ -69,7 +69,14 @@ or you want to add a websocket controler
 
 > python manifest.py -c newcontroller --websocket
 
+## UI module (based on tornado)
+> there are some most useful ui modules
 
+<code>{% module Card('title') %} </code>
+
+<code>{% module Inputs(action='/post' ,'account', 'password:passwd', 'checkbox:remember', 'file:slect', type='card') %} </code>
+
+<code>{% module Table(title='title',[header1, header2, header3], *items ,table_type='striped') %} </code>
 
 
 
