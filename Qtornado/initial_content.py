@@ -8,14 +8,14 @@ InitContent = {
 from os import path
 # here to load all controllers
 from Qtornado.log import LogControl
-from QmongoHelper import Mongo
+import pymongo
 from controller import *
 
 # load ui modules
 import ui
 
 # db engine 
-db_engine = Mongo('local')
+db_engine = pymongo.Connection()['local']
 
 # static path 
 static_path = "./static"
