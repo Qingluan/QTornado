@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
  
  
 setup(name='Qtornado',
-    version='1.7.5',
+    version='1.7.7',
     description='a web framework like rails, which based on tornado',
     url='https://github.com/Qingluan/QTornado.git',
     author='Qing luan',

@@ -6,8 +6,10 @@ import argparse
 
 
 root_path = os.path.dirname(__file__)
-resource_path = os.path.join(root_path, 'res/static')
-template_path = os.path.join(root_path, 'res/ui_templates')
+_res_static = os.path.join('res', 'static')
+_res_ui = os.path.join('res', 'ui_templates')
+resource_path = os.path.join(root_path, _res_static)
+template_path = os.path.join(root_path, _res_ui)
 src_path = root_path
 
 # load functional lib 
@@ -49,7 +51,7 @@ class TreeFile(FillContentHandler):
         
         os.mkdir(_path("static"))
         os.mkdir(_path("template"))
-        os.mkdir(_path("template/ui_templates"))
+        os.mkdir(_path(os.path.join("template", "ui_templates")))
 
 
         controller_file = _path("controller.py")
@@ -58,7 +60,7 @@ class TreeFile(FillContentHandler):
         setting_file = _path("setting.py")
         setting_file_content = self.get_init_setting_content(options['db'])
 
-        html_file =  _path( "template/index.html")
+        html_file =  _path( os.path.join("template","index.html"))
         html_file_content = self.get_html_content("index")
 
         main_file = _path("main.py")
@@ -91,14 +93,14 @@ class TreeFile(FillContentHandler):
         LogControl.info( "\t ok")
 
         print( "static res build ...",)
-        com = "cp -a {}/*  {}".format(resource_path, _path("static"))
+        com = "cp -a {}  {}".format(resource_path, self.root_path)
         os.popen(com)
         LogControl.info( "ok")
 
         print("init model data ")
         self._write_file(model_file, model_file_str)
         LogControl.info("ok")
-        
+
 
         print("init ui modules")
         self._write_file(ui_file, ui_file_str)

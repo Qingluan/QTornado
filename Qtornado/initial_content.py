@@ -13,15 +13,16 @@ from controller import *
 
 # load ui modules
 import ui
+import sys
 
 # db engine 
 # db_engine = pymongo.Connection()['local']
-db_connect_cmd = '%s'
+db_connect_cmd = r'%s'
 db_engine = %s
 
 
 # static path 
-static_path = "./static"
+static_path = r".\static" if sys.platform.startswith("win") else "./static"
 
 # set log level
 LogControl.LOG_LEVEL |= LogControl.OK
