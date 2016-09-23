@@ -1,4 +1,14 @@
+import os
 from Qtornado.initial_content import InitContent
+from termcolor import colored
+
+
+def default_input(String, default=''):
+    val = input(String)
+    if val:
+        return val
+    return default
+
 
 class FillContentHandler(object):
 
@@ -27,15 +37,55 @@ class FillContentHandler(object):
             controller__str = controller__str % (controller_name,controller_name,controller_name_low,controller_name_low)
         return controller__str
 
-    def get_init_setting_content(self):
+    def get_init_setting_content(self, type):
         setting_str = self.content['setting']
+        con = ''
+
+        database = default_input(colored('Choose a Database [local]\n:', 'cyan', attrs=['bold']), 
+                default='local')
+        con += 'database="%s",' % database
+
+        if type == 'mongo':
+            return setting_str % (database, "pymongo.Connection()['" + database + "']")
+
+        
+        sql_type = default_input(colored('sql type[sqlite] (mysql/postgresql) :', 'cyan', attrs=['bold']),
+            default='sqlite')
+        con += 'type="%s",' % sql_type
+
+        if sql_type == 'sqlite':
+            database = default_input(colored('Database file path [%s/db.sql]\n:' % os.getcwd() , 'cyan', attrs=['bold']),
+            default="%s/db.sql" % os.getcwd())
+            con = 'database="%s"' % database
+            setting_str = setting_str % (con, "SqlEngine(%s)" % con)
+            return setting_str
+
+        host = default_input(colored('Host[127.0.0.1]:', 'cyan', attrs=['bold']), 
+            default='127.0.0.1')
+        con += 'host="%s",' % host
+
+        user = default_input(colored('user[root]:', 'cyan', attrs=['bold']),
+            default='root')
+        con += 'user="%s",' % user
+
+        passwd = default_input(colored('passwd[NULL]:', 'cyan', attrs=['bold']))
+        con += 'password="%s"' % passwd
+
+        
+        if type == 'obj':
+            setting_str = setting_str % (con, "SqlObjEngine(%s)" % con)
+        else:
+            setting_str = setting_str % (con, "SqlEngine(%s)" % con)
+
         return setting_str
 
+    def get_model_content(self):
+        setting_str = self.content['model_module']
+        return setting_str
 
     def get_html_content(self,html_name,**options):
         def _fill_args(string,*args):
             try:
-
                 new_str = string % tuple( args)
                 return new_str
             except TypeError:

@@ -56,7 +56,7 @@ class TreeFile(FillContentHandler):
         controller_file_content = self.get_init_controller_file_content()
 
         setting_file = _path("setting.py")
-        setting_file_content = self.get_init_setting_content()
+        setting_file_content = self.get_init_setting_content(options['db'])
 
         html_file =  _path( "template/index.html")
         html_file_content = self.get_html_content("index")
@@ -66,6 +66,9 @@ class TreeFile(FillContentHandler):
 
         ui_file = _path("ui.py")
         ui_file_str = self.get_ui_content()
+
+        model_file = _path("model.py")
+        model_file_str = self.get_model_content()
 
         print( "manifest file copy is\t",)
         os.popen("cp {}  {}".format(os.path.join( src_path,"manifest.py"), cal_path))
@@ -91,6 +94,11 @@ class TreeFile(FillContentHandler):
         com = "cp -a {}/*  {}".format(resource_path, _path("static"))
         os.popen(com)
         LogControl.info( "ok")
+
+        print("init model data ")
+        self._write_file(model_file, model_file_str)
+        LogControl.info("ok")
+        
 
         print("init ui modules")
         self._write_file(ui_file, ui_file_str)
@@ -166,6 +174,7 @@ github : http://github.com/Qingluan
     parser.add_argument('-r','--re',default=False,type=bool)
     parser.add_argument('-t','--theme-choice',default=None) 
     parser.add_argument('-u','--uninstall',action="store_true",default=False)
+    parser.add_argument('-D','--db',default='sqlite', help='choose a db engine [sql, mongo, obj],\n obj is sql-class engine, handle sql like a class') 
     parser.add_argument('-e','--extends',default=None,help="this is for add  a new   template that will  extend another template \n example : -e main")
 
     # args,remind = parser.parse_known_args(args)
@@ -186,9 +195,9 @@ def main():
         
     if args.pro_name_path:
         if args.re:
-            tree.initial_files(re=True)
+            tree.initial_files(re=True, db=args.db)
         else:
-            tree.initial_files()
+            tree.initial_files(db=args.db)
         if args.init:
             tree.add_controller(args.init)    
     

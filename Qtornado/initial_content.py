@@ -8,14 +8,17 @@ InitContent = {
 from os import path
 # here to load all controllers
 from Qtornado.log import LogControl
-import pymongo
+from Qtornado.db import *
 from controller import *
 
 # load ui modules
 import ui
 
 # db engine 
-db_engine = pymongo.Connection()['local']
+# db_engine = pymongo.Connection()['local']
+db_connect_cmd = '%s'
+db_engine = %s
+
 
 # static path 
 static_path = "./static"
@@ -353,6 +356,22 @@ font-family: fantasy ;color:rgb(107, 167, 194)">
 </html>
 
         """,
+        'model_module':"""
+# this is just template , will be parse to 
+# written by Qingluan 
+# CREATE TABLE task (
+#        ID INTEGER PRIMARY KEY NOT NULL AUTO_INCREMENT ,
+#        CreatedTime TimeStamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+#        task_name varchar(255) not null default "default_task",
+#        status varchar(255) not null default "status",
+#        url TEXT)
+#
+#
+#
+class tables:
+    taks = {'task_name': 'default_task', 'url': str, 'status': 'status'}
+
+""",
         'ui_modules': """
 import tornado.web
 
@@ -430,13 +449,14 @@ class Inputs(tornado.web.UIModule):
             return ['text', res[0], '']
 
 
-    def render(self, *inputs, type='normal', title=None, form_type='horizontal', action='#'):
+    def render(self, *inputs, type='normal', title=None, form_type='horizontal', action='#', method='post'):
         inputs = [ self.classify(input) for input in inputs ]
         return self.render_string('template/ui_templates/{t}_inputs.html'.format(t=type), 
             inputs=inputs,
             type=form_type,
             title=title,
             action=action,
+            method=method,
         )
 
 

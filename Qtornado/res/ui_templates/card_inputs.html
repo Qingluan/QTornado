@@ -4,7 +4,7 @@
         {% if title != None %}
             <h3>{{ title }}</h3>
         {% end %}
-            <form class="form-{{ type }}" action="{{ action }}" >
+				<form class="form-{{ type }}" method="{{ method }}" action="{{ action }}" >
                 {% for input in inputs %}
                     <div class="form-group">
                         {% if input[0] == 'checkbox' %}
