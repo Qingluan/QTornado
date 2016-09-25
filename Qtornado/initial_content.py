@@ -173,6 +173,7 @@ class %sHandler(SocketHandler):
 <html lang="en">
 <head>      
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>%s</title>     
     <link href="/static/bootstrap/dist/css/bootstrap.css" rel="stylesheet"></link>
     {$ block head_css $}
@@ -185,8 +186,8 @@ class %sHandler(SocketHandler):
 <body>      
     <div class="main" class='main'>
         <div class="body">
-
-            <div class="left col-md-4 col-sm-9 col-xs-3">
+            {$ block left_d $}
+            <div class="left col-md-3 col-sm-4 col-xs-12">
             {$ module Nav([
             {
                 'txt':'Index',
@@ -201,9 +202,12 @@ class %sHandler(SocketHandler):
             },] ,title='Index') $}
             {$ block left $}
             {$ end $}
+            {$ end $}
                 
             </div>
-            <div class="content col-md-8 col-xs-9">
+
+            {$ block content_d $}
+            <div class="content col-md-9 col-sm-8 col-xs-9">
                 <div class="head">
                 {$ block head $}
                     <h1>Hacker Sites <small>ok?</small></h1>
@@ -215,6 +219,7 @@ class %sHandler(SocketHandler):
                 
             {$ end $}
             </div>
+            {$ end $}
         </div>
         <div class="tail">
         {$ block tail $}
