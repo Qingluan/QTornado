@@ -54,12 +54,17 @@ class SqlEngine:
             ss = time.strptime(timeobj, '%Y-%m-%d %H:%M:%S')
             return datetime.datetime.fromtimestamp(time.mktime(ss))
 
-    def run_cmd(self, cmd):
+    def run_cmd(self, cmd, *values):
         try:
-            self.cu.execute(cmd)
+            if values:
+                self.cu.execute(cmd, values)
+            else:
+                self.cu.execute(cmd)
         except Exception as e:
             print(e)
+            print(values)
             print(cmd)
+            raise e
 
         return self.con.commit()
 
@@ -119,8 +124,13 @@ class SqlEngine:
         return self.run_cmd(cmd)
 
     def close(self):
-        self.cu.close()
-        self.con.close()
+        try:
+            self.cu.close()
+            self.con.close()
+        except Exception:
+            pass
+        finally:
+            pass
 
     def __del__(self):
         self.close()
@@ -129,6 +139,8 @@ class SqlEngine:
         if isinstance(v, int):
             return '{}={}'.format(k, v)
         elif isinstance(v, str):
+            return '{}="{}"'.format(k, v)
+        elif isinstance(v, datetime.datetime):
             return '{}="{}"'.format(k, v)
         elif hasattr(v, '_table'):
             if hasattr(v, "ID"):
@@ -153,13 +165,15 @@ class SqlEngine:
         if isinstance(i, int):
             return str(i)
         elif isinstance(i, str):
-            return '"' + i + '"'
+            return i
         elif hasattr(i, '_table'):
             if hasattr(i, "ID"):
                 return str(i.ID)
             return 'NULL'
         elif i is time:
             return datetime.datetime.now()
+        elif isinstance(i, datetime.datetime):
+            return i
         else:
             print(i)
             raise("error insert")
@@ -170,23 +184,21 @@ class SqlEngine:
         # sept = '%s'
         values_tmp = ','.join([sept for i in range(len(values))])
         cmd = ("insert into %s ({order}) values ({values});" % table).format(order=','.join(insert_columns), values=values_tmp) 
-        # print(cmd)
-        try:
-            self.cu.execute(cmd, values)
-        except Exception as e:
-            print(e)
-            print(values)
-            print(cmd)
-            raise e
-
-        return self.con.commit()
+        # print(cmd, values)
+        
+        self.run_cmd(cmd, *values)
+        
 
     def update(self, table, sets, **condition):
+        sept = '?' if self.Type == 'sqlite' else '%s'
+
         cond = ' '.join([self._sql(*i) for i in condition.items()])
-        updated = ' '.join([self._sql(*i) for i in sets.items()])
+        updated = ','.join([self._sql(*i) for i in sets.items()])
         cmd = '''UPDATE {table}  SET {updated}
         WHERE {condition} ;
         '''.format(table=table, updated=updated, condition=cond)
+
+        # print(cmd)
         return self.run_cmd(cmd)
 
     def delete(self, table, **condition):
@@ -210,7 +222,7 @@ class Table:
     _table = 0
     _obj_handler = None
 
-    def __init__(self, **kargs):
+    def __init__(self, handle=None, **kargs):
         # setattr(self.__class__, '_table', self.__class__.__name__)
         self.ID = None
         self.CreatedTime = None
@@ -222,6 +234,10 @@ class Table:
         #         setattr(self, k, kargs[k])
         #     else:
         #         setattr(self, k, self.__class__.__dict__[k])
+        if Table._obj_handler is None:
+            if handle:
+                Table._obj_handler = handle
+
 
         for k in kargs:
             if k in self._columns():
@@ -240,7 +256,7 @@ class Table:
         return self.__class__.__name__
 
     @classmethod
-    def set_handle(cls, handler):
+    def _set_handle(cls, handler):
         cls._obj_handler = handler
 
     @classmethod
@@ -324,7 +340,6 @@ class SqlObjectEngine:
         for row in self._find(obj, **condition):
             yield obj(**dict(zip(columns, row)))
 
-
     def save(self, obj_self):
         columns = ['ID','CreatedTime'] +obj_self._columns()
         if obj_self.ID != None:
@@ -333,5 +348,12 @@ class SqlObjectEngine:
 
     def delete(self, obj_self):
         self.sql.delete(obj_self._table, ID=obj_self.ID)
+
+    def datetime(self, timeobj):
+        if isinstance(timeobj, datetime.datetime):
+            return timeobj
+        elif isinstance(timeobj, str):
+            ss = time.strptime(timeobj, '%Y-%m-%d %H:%M:%S')
+            return datetime.datetime.fromtimestamp(time.mktime(ss))
 
 
