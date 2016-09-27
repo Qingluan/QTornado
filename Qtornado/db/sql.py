@@ -47,6 +47,13 @@ class SqlEngine:
             self.con = engine.connect(database=database, **connect_options)
         self.cu = self.con.cursor()
 
+    def got_datetime(timeobj):
+        if isinstance(timeobj, datetime.datetime):
+            return timeobj
+        elif isinstance(timeobj, str):
+            ss = time.strptime(timeobj, '%Y-%m-%d %H:%M:%S')
+            return datetime.datetime.fromtimestamp(time.mktime(ss))
+
     def run_cmd(self, cmd):
         try:
             self.cu.execute(cmd)
@@ -151,17 +158,28 @@ class SqlEngine:
             if hasattr(i, "ID"):
                 return str(i.ID)
             return 'NULL'
-        elif isinstance(i, datetime.date):
-            raise("error insert")
+        elif i is time:
+            return datetime.datetime.now()
         else:
             print(i)
             raise("error insert")
 
     def insert(self, table, insert_columns, *values, **kargs):
         values = [ self._sqls(i) for i in values ]
-        cmd = "insert into %s ({order}) values ({values});".format(order=','.join(insert_columns), values=",".join(values)) % table
+        sept = '?' if self.Type == 'sqlite' else '%s'
+        # sept = '%s'
+        values_tmp = ','.join([sept for i in range(len(values))])
+        cmd = ("insert into %s ({order}) values ({values});" % table).format(order=','.join(insert_columns), values=values_tmp) 
         # print(cmd)
-        return self.run_cmd(cmd)
+        try:
+            self.cu.execute(cmd, values)
+        except Exception as e:
+            print(e)
+            print(values)
+            print(cmd)
+            raise e
+
+        return self.con.commit()
 
     def update(self, table, sets, **condition):
         cond = ' '.join([self._sql(*i) for i in condition.items()])
@@ -185,6 +203,10 @@ class SqlEngine:
 
 
 class Table:
+    """
+    this is sql Table trans to class
+    need set_handle(objhandle)
+    """
     _table = 0
     _obj_handler = None
 
@@ -218,6 +240,10 @@ class Table:
         return self.__class__.__name__
 
     @classmethod
+    def set_handle(cls, handler):
+        cls._obj_handler = handler
+
+    @classmethod
     def _columns(cls):
         return [i for i in cls.__dict__ if not i.startswith('__')]
 
@@ -243,6 +269,8 @@ class Table:
         self._update[k] = v
 
     def _save(self):
+        if self.ID is None:
+            return self._obj_handler.add(self)
         return self._obj_handler.save(self)
 
     def _delete(self):
