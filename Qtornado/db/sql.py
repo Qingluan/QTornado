@@ -105,7 +105,7 @@ class SqlEngine:
             elif isinstance(v, int):
                 columns[k] = '%s %s' % (k, 'INTEGER NOT NULL DEFAULT %d' % v)
             elif isinstance(v, str):
-                columns[k] = '%s %s' % (k, 'VARCHAR(255) NOT NULL DEFAULT "%s"' % v)
+                columns[k] = '%s %s' % (k, 'VARCHAR(255) NOT NULL DEFAULT \'%s\'' % v)
             
             elif hasattr(v, '_table'):
                 columns[k] = '%s %s' % (k, 'INTEGER, FOREIGN KEY (%s) REFERENCES %s(ID) ' % (k, v.__name__))

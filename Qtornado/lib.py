@@ -1,6 +1,7 @@
 from Qtornado.log import LogControl
 import os
-import re
+import re, sys
+from collections import defaultdict
 
 LogControl.LOG_LEVEL |= LogControl.INFO
 
@@ -60,3 +61,41 @@ class XmlTag(object):
         with open(self.file_name,'w') as fp:
             fp.write(new_content)
         
+
+class ParseExtendsArgues(object):
+
+    def __init__(self, args_str):
+        self.raw_str = args_str
+        self.args = {}
+        if args_str:
+            self.parse()
+
+    def parse(self):
+        try:
+            for i in self.raw_str.split(","):
+                k, v = i.split(":")
+                if v in '0123456789':
+                    v = eval(v)
+                elif v.lower() == 'true' or v.lower() == 'false':
+                    v = eval(v[0].upper() + v[1:])
+                else:
+                    pass
+                self.args[k] = v
+
+        except Exception as e:
+
+            LogControl.err("invilid args", self.raw_str)
+            LogControl.err(e)
+            sys.exit(0)
+
+    def __getitem__(self, k):
+        return self.args.get(k)
+
+    def __setitem__(self, k, v):
+        self.args[k] = v
+
+    def __repr__(self):
+        return ','.join(self.args.keys())
+    
+    def keys(self):
+        return self.args.keys()
