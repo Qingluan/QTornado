@@ -21,6 +21,14 @@ class DbManifest():
             if isinstance(table, dict):
                 LogControl.info(self.handle.create(name, **table))
 
+    def db_update(self):
+        for name, table in get_tables(self.tables):
+            try:
+                self.handle.alter(name, **table)
+            except Exception as e:
+                LogControl.err(name)
+                LogControl.err(e)
+
     def db_drop(self, name):
         self.handle.drop_table(name)
         LogControl.info("delete table ", name)

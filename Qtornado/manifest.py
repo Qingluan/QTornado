@@ -53,6 +53,9 @@ if __name__ == "__main__":
         db.db_created()
         sys.exit(0)
 
+    if args.db_update:
+        db = DbManifest(db_connect_cmd, tables)
+
     if args.unintall:
         os.popen("rm -rf ./*")
 
@@ -81,5 +84,14 @@ if __name__ == "__main__":
                 websocket=args.websocket,
                 **extend_args.args
                 )
+        elif not args.add_controller:
+            LogControl.err("None args err")
         else:
-            LogControl.err("err args")
+            tree.add_controller(
+                args.add_controller, 
+                websocket=args.websocket,
+                theme=args.theme_choice,
+                extends=args.extends,
+                **extend_args.args
+                )
+

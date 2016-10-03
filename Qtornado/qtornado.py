@@ -61,7 +61,7 @@ class TreeFile(FillContentHandler):
         setting_file_content = self.get_init_setting_content(options['db'])
 
         html_file =  _path( os.path.join("template","index.html"))
-        html_file_content = self.get_html_content("index")
+        html_file_content = self.get_html_content("index", **options)
 
         main_file = _path("main.py")
         main_file_str = self.get_main_content()

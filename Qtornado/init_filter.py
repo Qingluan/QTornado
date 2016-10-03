@@ -1,7 +1,9 @@
 import os
 from Qtornado.initial_content import InitContent
 from termcolor import colored
+from Qtornado.log import LogControl
 
+LogControl.LOG_LEVEL = LogControl.ERR
 
 def default_input(String, default=''):
     val = input(String)
@@ -83,7 +85,20 @@ class FillContentHandler(object):
         setting_str = self.content['model_module']
         return setting_str
 
-    def get_html_content(self,html_name,**options):
+    def get_html_content(self, html_name, **options):
+        left = 3
+        right = 9
+        try:
+            if 'left' in options:
+                left = int(options['left'])
+            if 'right' in options:
+                right = int(options['right'])
+        except Exception as e:
+            LogControl.err(e, left,right)
+            raise(e)
+            left = 3
+            right = 9
+
         def _fill_args(string,*args):
             try:
                 new_str = string % tuple( args)
@@ -93,23 +108,25 @@ class FillContentHandler(object):
                 new_args = tuple(args )
                 return _fill_args(string,*new_args)
         if "theme" in options:
-            html_str = self.content[options["theme"]]
-            try:
-                html_str = _fill_args(html_str,html_name)
-                return html_str
-            except ValueError:
-                return html_str
+            if options['theme']:
+                html_str = self.content[options["theme"]]
+                try:
+                    html_str = _fill_args(html_str,html_name)
+                    return html_str
+                except ValueError:
+                    return html_str
         if "extends" in options:
-            html_str = self.content["extends_html"]
-            try:
-                html_str = _fill_args(html_str,options['extends'])
-                html_str = html_str.replace(r'$', r'%')
-                return html_str
-            except ValueError:
-                return html_str
+            if options['extends']:
+                html_str = self.content["extends_html"]
+                try:
+                    html_str = _fill_args(html_str,options['extends'])
+                    html_str = html_str.replace(r'$', r'%')
+                    return html_str
+                except ValueError:
+                    return html_str
 
         html_str = self.content['html']
-        html_str = _fill_args(html_str ,html_name)
+        html_str = _fill_args(html_str ,html_name, html_name, left, left+1, right, right -1,  html_name, html_name)
         html_str = html_str.replace(r'$', r'%')
         return html_str
 

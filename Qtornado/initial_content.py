@@ -187,7 +187,7 @@ class %sHandler(SocketHandler):
     <div class="main" class='main'>
         <div class="body">
             {$ block left_d $}
-            <div class="left col-md-3 col-sm-4 col-xs-12">
+            <div class="left col-md-%d col-sm-%d col-xs-12">
             {$ module Nav([
             {
                 'txt':'Index',
@@ -207,7 +207,7 @@ class %sHandler(SocketHandler):
             </div>
 
             {$ block content_d $}
-            <div class="content col-md-9 col-sm-8 col-xs-9">
+            <div class="content col-md-%d col-sm-%d col-xs-9">
                 <div class="head">
                 {$ block head $}
                     <h1>Hacker Sites <small>ok?</small></h1>
