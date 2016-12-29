@@ -15,6 +15,9 @@
       {% else %}
         {{ li['txt'] }}
       {% end %}
+      {% if 'code' in li %}
+        <code>{{ li['code'] }}</code>
+      {% end %}
     </li>
     {% if 'tq' not in li %}
     <li class="divider"></li>

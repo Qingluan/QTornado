@@ -5,6 +5,7 @@ InitContent = {
 ## write by qingluan 
 # this is a config file
 # include db and debug , static path 
+import os
 from os import path
 # here to load all controllers
 from Qtornado.log import LogControl
@@ -22,8 +23,9 @@ db_engine = %s
 
 
 # static path 
-static_path = r".\static" if sys.platform.startswith("win") else "./static"
-
+rdir_path = os.path.dirname(__file__)
+static_path = rdir_path + r"\static" if sys.platform.startswith("win") else "./static"
+files_path = rdir_path + r".\static\\files" if sys.platform.startswith("win") else "./static/files"
 # set log level
 LogControl.LOG_LEVEL |= LogControl.OK
 LogControl.LOG_LEVEL |= LogControl.INFO
@@ -40,7 +42,11 @@ Settings = {
 
 
 ## follow is router
-
+try:
+    os.mkdir(files_path)
+except FileExistsError:
+    pass
+#
 appication = tornado.web.Application([
                 (r'/',IndexHandler),
                 # add some new route to router
@@ -212,6 +218,7 @@ class %sHandler(SocketHandler):
                 {$ block head $}
                     <h1>Hacker Sites <small>ok?</small></h1>
                     <p>%s</p>
+                    {$ module Files() $}
                 {$ end $}
                 </div>
             {$ block content $}
@@ -380,7 +387,7 @@ class tables:
 """,
         'ui_modules': """
 import tornado.web
-
+import os
 
 class Card(tornado.web.UIModule):
     
@@ -560,6 +567,36 @@ li.divider{
 }
         '''
 
+class Files(Nav):
+    \"\"\"
+    items example:
+        Files(file_path)
+    \"\"\"
+    def get_len(self, f):
+        l = os.stat("./static/files/" + f).st_size
+        s = "%f B" % float(l)
+        if l / 1024 > 1:
+            s = "%2.2f KB" % float(l/ 1024)
+        else:
+            return s
+
+        if l / 1024 ** 2 > 1:
+            s = "%2.2f MB" % float(l/ 1024 **2)
+        else:
+            return s
+
+        if l / 1024 ** 3 > 1:
+            s = "%2.2f GB" % float(l/ 1024 **3)
+        else:
+            return s
+
+    def render(self, type='normal', title='Dashboard', nav_type='stacked'):
+        ss = [{
+            "txt":f,
+            "link":"/static/files/" + f,
+            "code": f.split(".").pop() + "[%s]" % self.get_len(f)
+        } for f in os.listdir("./static/files")]
+        return super().render(ss, type=type, title=title, nav_type=nav_type)
 
         """,
 
