@@ -10,9 +10,18 @@ include Qtornado/res/static/bootstrap/less/mixins/*
 include Qtornado/res/static/bootstrap/less/*
 
 include Qtornado/res/static/css/*
+include Qtornado/res/static/plugins/*
+include Qtornado/res/static/plugins/leaflet/*
+include Qtornado/res/static/plugins/leaflet/images/*
+
 include Qtornado/res/static/images/*
 include Qtornado/res/static/jquery/dist/*
 
 include Qtornado/res/static/js/*
 
 include Qtornado/res/ui_templates/*
+
+
+include Qtornado/res/static/res/*
+include Qtornado/res/static/res/CN/*
+include Qtornado/res/static/res/region/*
