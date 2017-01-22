@@ -598,6 +598,40 @@ class Files(Nav):
         } for f in os.listdir("./static/files")]
         return super().render(ss, type=type, title=title, nav_type=nav_type)
 
+
+class LMap(tornado.web.UIModule):
+    \"\"\"
+    this is a map plugin , based on leaflet
+    \"\"\"
+    def render(self, id, host, height=460):
+        return self.render_string('template/ui_templates/plugin-map.html', 
+            id=id,
+            host=host,
+            height=height)
+
+
+class LEarth(tornado.web.UIModule):
+    \"\"\"
+    this is a earth plugin , based on leaflet
+    \"\"\"
+    def render(self, id, height=360, width=760):
+        return self.render_string('template/ui_templates/plugin-earth.html',
+            id=id,
+            w=width,
+            h=height)
+        
+
+class LGeoControl(tornado.web.UIModule):
+    \"\"\"
+    this is a controller to controll geo.
+    \"\"\"
+    def render(self, host="localhost:8080/mapapi", earth="earth",map="lmap"):
+        return self.render_string('template/ui_templates/plugin-geo-control.html',
+            host=host,
+            map=map,
+            earth=earth,
+        )
+
         """,
 
 }
