@@ -24,8 +24,8 @@ db_engine = %s
 
 # static path 
 rdir_path = os.path.dirname(__file__)
-static_path = rdir_path + r"\static" if sys.platform.startswith("win") else "./static"
-files_path = rdir_path + r".\static\\files" if sys.platform.startswith("win") else "./static/files"
+static_path = rdir_path + r"\static" if sys.platform.startswith("win") else rdir_path + r"/static"
+files_path = rdir_path + r".\static\\files" if sys.platform.startswith("win") else rdir_path + r"/static/files"
 # set log level
 LogControl.LOG_LEVEL |= LogControl.OK
 LogControl.LOG_LEVEL |= LogControl.INFO
